@@ -2,14 +2,13 @@
 
 *From Pixels to Patients - AAPM 2026 (Session 2 of 3)*
 
-This guide continues directly from Session 1. We assume you already have the Session 1
-NIfTI export: one `image.nii.gz`, a `masks/` folder, optional `doses/`, and a
-`metadata.json` sidecar for each anonymized series.
+Session 2 starts with the NIfTI export produced in Session 1: one `image.nii.gz`, a
+`masks/` folder, optional `doses/`, and a `metadata.json` sidecar for each anonymized
+series.
 
-The goal of this session is a reproducible path from that curated dataset to a trained,
-evaluated, and packaged PyTorch model. The demonstration task is 3D GTV segmentation
-from CT, with optional RT-structure context channels such as lungs, heart, esophagus,
-and cord.
+The goal is a reproducible path from that curated dataset to a trained, evaluated, and
+packaged PyTorch model. The example task is 3D GTV segmentation from CT, with optional
+RT-structure context channels such as lungs, heart, esophagus, and cord.
 
 ---
 
@@ -31,7 +30,7 @@ By the end of this session you should be able to:
 | File | What it is |
 |------|------------|
 | `NSCLC_NIfTI_to_PyTorch.ipynb` | The runnable companion notebook for the talk. |
-| `Guide.md` | This document. |
+| `Guide.md` | Orientation and run instructions. |
 | `train_gtv_segmentation.py` | Script version of the notebook training workflow. |
 | `pytorch_workflow/` | Reusable PyTorch data, model, training, and packaging code. |
 
@@ -50,14 +49,13 @@ By the end of this session you should be able to:
    ```
 4. Open `NSCLC_NIfTI_to_PyTorch.ipynb` and run top to bottom.
 
-This session assumes the Session 1 export has already been generated. Training outputs
-are written locally under `Session2/outputs/`, which is ignored by git.
+Training outputs are written locally under `Session2/outputs/`, which is ignored by git.
 
 ---
 
 ## The pipeline, step by step
 
-The notebook mirrors the talk. Each stage maps to a slide:
+The notebook follows the same path used in the session:
 
 1. **Receive the dataset** - start from Session 1's anonymized NIfTI tree.
 2. **Index the cases** - find each `image.nii.gz`, target mask, optional context masks,
@@ -97,14 +95,13 @@ filled with zeros so the model interface stays stable.
 
 ---
 
-## Why segmentation first?
+## Modeling task
 
-The README language for this session is sound. The most seamless continuation from
-Session 1 is a segmentation workflow because Session 1 explicitly normalizes RT structure
-masks. Outcome prediction can be layered on later, but it needs cleaner clinical endpoint
-definitions than the current public export guarantees. GTV segmentation lets the session
-teach dataloaders, 3D augmentation, leakage-safe splits, training, evaluation, and model
-packaging using the exact objects produced in Session 1.
+GTV segmentation is a natural first modeling task because it uses the image and RT
+structure masks produced directly by Session 1. Clinical outcome prediction can be added
+once endpoint definitions, follow-up windows, and censoring rules are ready. Starting
+with segmentation keeps the session focused on the core PyTorch workflow: dataloaders,
+3D augmentation, leakage-safe splits, training, evaluation, and model packaging.
 
 ---
 
