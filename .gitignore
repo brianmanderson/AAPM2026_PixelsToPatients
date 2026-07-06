@@ -1,0 +1,72 @@
+# ==========================================================================
+#  AAPM2026_PixelsToPatients — keep code & docs in git; keep data & keys out
+# ==========================================================================
+
+# --- Patient data & pipeline outputs (NEVER commit) -----------------------
+# Re-identification key: maps study/series hashes back to MRNs. Must stay in a
+# secured, access-controlled location and never enter version control.
+**/anonymization_key.json
+
+# Downloaded DICOM and generated datasets
+aapm_nsclc/
+tciaDownload/
+**/dicom/
+**/nifti/
+*.dcm
+*.nii
+*.nii.gz
+*.npy
+*.npz
+*.mha
+*.mhd
+*.nrrd
+
+# TCIA manifests and bulk archives
+*.tcia
+*.zip
+*.tar
+*.tar.gz
+*.7z
+
+# Cohort manifests (may contain identifiers if not anonymized).
+# Remove this line, or `git add -f`, only for a de-identified manifest you
+# intend to share.
+manifest.csv
+**/manifest*.csv
+
+# --- Python ---------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+.python-version
+
+# --- Jupyter --------------------------------------------------------------
+.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# --- Editors & OS ---------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Misc -----------------------------------------------------------------
+*.log
+.env
+.env.*
