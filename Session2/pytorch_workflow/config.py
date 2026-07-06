@@ -9,7 +9,7 @@ from typing import Sequence
 class TrainingConfig:
     """Small, serializable config for a reproducible 3D segmentation run."""
 
-    nifti_root: Path = Path("aapm_nsclc/nifti")
+    nifti_root: Path = Path("Session1/aapm_nsclc/nifti")
     output_dir: Path = Path("Session2/outputs/runs/gtv_unet3d")
     target_mask: str = "gtv"
     context_masks: Sequence[str] = ("lung_l", "lung_r", "heart", "esophagus", "cord")

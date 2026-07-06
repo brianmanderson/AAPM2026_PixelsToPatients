@@ -39,10 +39,12 @@ By the end of this session you should be able to:
 ## Quick start
 
 1. Run Session 1 through the NIfTI export step.
-2. Confirm the default dataset path exists:
+2. Confirm the Session 1 export exists:
    ```
-   aapm_nsclc/nifti/
+   Session1/aapm_nsclc/nifti/
    ```
+   The notebook auto-detects this location whether you launch it from the repo
+   root or from the `Session2` folder.
 3. Install the Session 2 dependencies in your Python environment:
    ```
    pip install torch nibabel numpy pandas matplotlib
