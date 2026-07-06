@@ -6,10 +6,10 @@ from pathlib import Path
 import torch
 from torch.utils.data import DataLoader
 
-from pixelstopatients import NiftiSegmentationDataset, TinyUNet3D, TrainingConfig
-from pixelstopatients.data import discover_cases, split_by_patient, write_index_csv
-from pixelstopatients.engine import evaluate, seed_everything, train_one_epoch, write_json
-from pixelstopatients.packaging import save_deployment_bundle
+from pytorch_workflow import NiftiSegmentationDataset, TinyUNet3D, TrainingConfig
+from pytorch_workflow.data import discover_cases, split_by_patient, write_index_csv
+from pytorch_workflow.engine import evaluate, seed_everything, train_one_epoch, write_json
+from pytorch_workflow.packaging import save_deployment_bundle
 
 
 def parse_args() -> argparse.Namespace:
@@ -97,4 +97,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

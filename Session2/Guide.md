@@ -33,7 +33,7 @@ By the end of this session you should be able to:
 | `NSCLC_NIfTI_to_PyTorch.ipynb` | The runnable companion notebook for the talk. |
 | `Guide.md` | This document. |
 | `train_gtv_segmentation.py` | Script version of the notebook training workflow. |
-| `pixelstopatients/` | Reusable PyTorch data, model, training, and packaging code. |
+| `pytorch_workflow/` | Reusable PyTorch data, model, training, and packaging code. |
 
 ---
 
