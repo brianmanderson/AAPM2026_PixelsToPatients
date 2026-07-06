@@ -7,14 +7,19 @@ import torch
 from torch.utils.data import DataLoader
 
 from pytorch_workflow import NiftiSegmentationDataset, TinyUNet3D, TrainingConfig
-from pytorch_workflow.data import discover_cases, split_by_patient, write_index_csv
+from pytorch_workflow.data import discover_cases, find_nifti_root, split_by_patient, write_index_csv
 from pytorch_workflow.engine import evaluate, seed_everything, train_one_epoch, write_json
 from pytorch_workflow.packaging import save_deployment_bundle
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Train a workshop 3D U-Net on Session 1 NIfTI exports.")
-    parser.add_argument("--nifti-root", type=Path, default=TrainingConfig.nifti_root)
+    parser.add_argument(
+        "--nifti-root",
+        type=Path,
+        default=None,
+        help="Session 1 NIfTI export. Defaults to auto-detecting Session1/aapm_nsclc/nifti.",
+    )
     parser.add_argument("--output-dir", type=Path, default=TrainingConfig.output_dir)
     parser.add_argument("--epochs", type=int, default=TrainingConfig.epochs)
     parser.add_argument("--batch-size", type=int, default=TrainingConfig.batch_size)
@@ -24,8 +29,14 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
+    nifti_root = args.nifti_root or find_nifti_root()
+    if nifti_root is None:
+        raise SystemExit(
+            "Could not find the Session 1 NIfTI export (Session1/aapm_nsclc/nifti). "
+            "Run Session 1 through the NIfTI export step, or pass --nifti-root explicitly."
+        )
     config = TrainingConfig(
-        nifti_root=args.nifti_root,
+        nifti_root=nifti_root,
         output_dir=args.output_dir,
         epochs=args.epochs,
         batch_size=args.batch_size,

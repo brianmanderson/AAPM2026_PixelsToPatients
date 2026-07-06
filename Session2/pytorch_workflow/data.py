@@ -31,6 +31,27 @@ class CaseRecord:
         return self.metadata_path is not None and self.metadata_path.exists()
 
 
+def find_nifti_root(search_from: str | Path | None = None) -> Path | None:
+    """Locate the Session 1 NIfTI export without hard-coding one relative path.
+
+    Session 1 writes its export to ``Session1/aapm_nsclc/nifti``. Session 2 may be
+    launched from the repository root or from the ``Session2`` folder, so the export
+    sits at a different relative path depending on where you start. Walk up from
+    ``search_from`` (the current directory by default) and return the first matching
+    tree, or ``None`` if nothing is found.
+    """
+
+    start = Path(search_from).resolve() if search_from else Path.cwd().resolve()
+    for base in (start, *start.parents):
+        for candidate in (
+            base / "Session1" / "aapm_nsclc" / "nifti",
+            base / "aapm_nsclc" / "nifti",
+        ):
+            if candidate.is_dir():
+                return candidate
+    return None
+
+
 def discover_cases(
     nifti_root: str | Path,
     required_masks: Sequence[str] = ("gtv",),
