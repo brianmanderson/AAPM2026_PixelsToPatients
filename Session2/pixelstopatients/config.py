@@ -10,7 +10,7 @@ class TrainingConfig:
     """Small, serializable config for a reproducible 3D segmentation run."""
 
     nifti_root: Path = Path("aapm_nsclc/nifti")
-    output_dir: Path = Path("Session2/tempworkspace/runs/gtv_unet3d")
+    output_dir: Path = Path("Session2/outputs/runs/gtv_unet3d")
     target_mask: str = "gtv"
     context_masks: Sequence[str] = ("lung_l", "lung_r", "heart", "esophagus", "cord")
     patch_size: tuple[int, int, int] = (32, 128, 128)  # D, H, W
@@ -30,4 +30,3 @@ class TrainingConfig:
         data["context_masks"] = list(self.context_masks)
         data["patch_size"] = list(self.patch_size)
         return data
-
