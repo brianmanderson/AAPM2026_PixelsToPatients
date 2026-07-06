@@ -34,8 +34,6 @@ By the end of this session you should be able to:
 | `Guide.md` | This document. |
 | `train_gtv_segmentation.py` | Script version of the notebook training workflow. |
 | `pixelstopatients/` | Reusable PyTorch data, model, training, and packaging code. |
-| `tests/` | Lightweight smoke tests using synthetic Session 1-like data. |
-| `tempworkspace/` | Scratch space for generated data and training runs; ignored by git. |
 
 ---
 
@@ -52,9 +50,8 @@ By the end of this session you should be able to:
    ```
 4. Open `NSCLC_NIfTI_to_PyTorch.ipynb` and run top to bottom.
 
-If you do not have the Session 1 data on this machine, use the notebook's synthetic-data
-cell. It writes a tiny fake NIfTI dataset under `Session2/tempworkspace/` so the workflow
-can be tested without committing patient data.
+This session assumes the Session 1 export has already been generated. Training outputs
+are written locally under `Session2/tempworkspace/`, which is ignored by git.
 
 ---
 
@@ -115,4 +112,4 @@ packaging using the exact objects produced in Session 1.
 
 Do not commit NIfTI data, manifests with identifiers, model checkpoints trained on
 non-shareable data, or any re-identification key. This folder keeps generated artifacts
-under `tempworkspace/`, and that folder is ignored by git.
+under `Session2/tempworkspace/`, and that path is ignored by git.
