@@ -68,12 +68,17 @@ The notebook mirrors the talk. Each stage maps to a slide:
    native-like `0.98×0.98×3 mm`) so every case is comparable. Resampling uses **linear**
    interpolation for the image and dose, **nearest-neighbour** for masks (never blur a label).
 7. **Preserve metadata** — request extra DICOM tags (age, sex, manufacturer, kVp, slice
-   thickness); they're written to a `metadata.json` beside every exported series.
+   thickness). They're written to a **grouped, versioned `metadata.json`** (`schema_version: 2`)
+   beside every exported series — DICOM features organized by category (`image`, `structures`,
+   `doses`, `plans`), with your requested tags nested under the owning category's `tags` sub-dict
+   (image tags under `image["tags"]`). Empty categories are omitted, so an image-only series still
+   parses cleanly. Pass `metadata_style="flat"` for the historical `{name: value}` dict.
 8. **Convert** — `write_to_folder` does it all in one call: resampled `image.nii.gz`, one
    mask per ROI, dose (when present), the metadata sidecar, a cohort `manifest.csv`, and an
    `anonymization_key.json`.
-9. **Verify** — load an exported case, confirm image and masks share geometry, and preview a
-   slice with the GTV overlaid.
+9. **Verify** — load an exported case, confirm image and masks share geometry, read the grouped
+   `metadata.json` (tags under `image["tags"]`, each exported ROI's `volume_cc` and
+   `exported_file`), and preview a slice with the GTV overlaid.
 10. **Grow the dataset** — the deterministic anonymization key and incremental manifest let
     you re-pull the same patients and fold in new imaging or follow-up without re-identifying.
 
@@ -90,7 +95,7 @@ nifti/
     masks/
       gtv.nii.gz  lung_l.nii.gz  lung_r.nii.gz  ...
     doses/            # only when dose is present
-    metadata.json     # age, spacing, manufacturer, outcome, ...
+    metadata.json     # grouped DICOM features (schema v2); your tags under image["tags"]
   manifest.csv              # identifiers, spacing, per-ROI volume (cc)
   anonymization_key.json    # reverse lookup — keep this OUT of git
 ```
