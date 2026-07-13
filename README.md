@@ -55,7 +55,12 @@ checking, and detecting model drift, out-of-distribution cases, and silent failu
 from real-world experience (including our own mistakes), plus a framework for monitoring
 and governance across the full model lifecycle.
 
-*Materials to be added.*
+**Inside:** a **reference-free** contour-QC layer that characterizes the Session 1/2 training
+data and checks new contours with no ground truth — input validation (is it CT? in-range
+spacing?), a radiomic **shape** outlier detector, and a **positional** atlas that flags a GTV
+placed where the surrounding anatomy says it shouldn't be. Ships an end-to-end script
+(`run_qc_checks.py`), a reusable `qc_workflow/` package, and a companion notebook. See
+[`Session3/Guide.md`](Session3/Guide.md).
 
 ---
 
