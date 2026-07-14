@@ -16,6 +16,7 @@ Presented by **Brian M. Anderson, PhD**, Radiation Medicine & Applied Sciences.
 
 ```
 AAPM2026_PixelsToPatients/
+├── Session0/   Setting Up: Colab, Python, an IDE, and Virtual Environments
 ├── Session1/   From DICOM to a Generalized Research Dataset
 ├── Session2/   From Dataset to Model: PyTorch Workflows
 ├── Session3/   From Model to Clinic: Deployment and Integration
@@ -24,7 +25,8 @@ AAPM2026_PixelsToPatients/
 
 Each `SessionN/` folder is self-contained and holds that session's materials — a
 `Guide.md` orienting you to the contents, plus the runnable notebooks, code, and templates
-demonstrated in the talk.
+demonstrated in the talk. `Session0/` is the exception and the place to start if you're new
+to Python: it's setup instructions only, no notebook.
 
 ---
 
@@ -66,7 +68,15 @@ placed where the surrounding anatomy says it shouldn't be. Ships an end-to-end s
 
 ## Getting started
 
-The materials are Python-based. A typical setup:
+**Never installed Python?** Start at [`Session0/Guide.md`](Session0/Guide.md) — a setup
+prequel covering how to run these notebooks in Google Colab with nothing installed, how to
+install Python 3.10+ and an IDE (VS Code or PyCharm), and how virtual environments work and
+why every project should have one.
+
+**In a hurry?** Open Session 1 in Colab right now — no install, no clone:
+[NSCLC_Radiomics_DICOM_to_NIfTI.ipynb](https://colab.research.google.com/github/brianmanderson/AAPM2026_PixelsToPatients/blob/main/Session1/NSCLC_Radiomics_DICOM_to_NIfTI.ipynb).
+
+**Already set up?** The materials are Python-based (3.10 or later). A typical setup:
 
 ```bash
 git clone https://github.com/brianmanderson/AAPM2026_PixelsToPatients.git
@@ -78,7 +88,8 @@ Then open the session you're interested in and follow its `Guide.md`. Session 1 
 its own dependencies from within the notebook (`DicomRTTool`, `tcia_utils`, `SimpleITK`, …).
 
 **Prerequisites:** basic familiarity with DICOM and radiation therapy workflows. Python
-experience is helpful but not required — worked examples are provided throughout.
+experience is helpful but not required — worked examples are provided throughout, and
+Session 0 covers the setup from zero.
 
 ---
 

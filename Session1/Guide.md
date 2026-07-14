@@ -34,6 +34,12 @@ The notebook is the heart of the session; this guide is the map.
 
 ## Quick start
 
+> **No Python yet?** [`Session0/Guide.md`](../Session0/Guide.md) covers running this
+> notebook in Google Colab with nothing installed, or setting up Python, an IDE, and a
+> virtual environment locally. You can also
+> [open this notebook in Colab](https://colab.research.google.com/github/brianmanderson/AAPM2026_PixelsToPatients/blob/main/Session1/NSCLC_Radiomics_DICOM_to_NIfTI.ipynb)
+> right now.
+
 1. **Install dependencies.** The first notebook cell handles this:
    ```
    pip install DicomRTTool tcia_utils SimpleITK pandas matplotlib nibabel
