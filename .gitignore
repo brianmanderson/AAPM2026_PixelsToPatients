@@ -8,6 +8,7 @@
 **/anonymization_key.json
 
 # Downloaded DICOM and generated datasets
+maia-presentation-package/
 aapm_nsclc/
 tciaDownload/
 **/dicom/
