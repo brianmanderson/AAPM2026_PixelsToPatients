@@ -57,12 +57,15 @@ checking, and detecting model drift, out-of-distribution cases, and silent failu
 from real-world experience (including our own mistakes), plus a framework for monitoring
 and governance across the full model lifecycle.
 
-**Inside:** a **reference-free** contour-QC layer that characterizes the Session 1/2 training
-data and checks new contours with no ground truth — input validation (is it CT? in-range
-spacing?), a radiomic **shape** outlier detector, and a **positional** atlas that flags a GTV
-placed where the surrounding anatomy says it shouldn't be. Ships an end-to-end script
-(`run_qc_checks.py`), a reusable `qc_workflow/` package, and a companion notebook. See
-[`Session3/Guide.md`](Session3/Guide.md).
+**Inside:** two complementary contour-QC layers. A **reference-free** layer (`qc_workflow/`)
+characterizes the Session 1/2 training data and checks new contours with no ground truth — input
+validation (is it CT? in-range spacing?), a radiomic **shape** outlier detector, and a
+**positional** atlas that flags a GTV placed where the surrounding anatomy says it shouldn't be.
+A **reference-based** layer (`contour_compare/`) grades an AI contour against the physician's
+manual one — volumetric Dice, surface Dice @1/2/3 mm, added/total path length, an estimated time
+saved, and a suggested 1–5 clinical-acceptability rating. Ships end-to-end scripts
+(`run_qc_checks.py`, `compare_contours.py`), the two reusable packages, and a companion notebook.
+See [`Session3/Guide.md`](Session3/Guide.md).
 
 ---
 
@@ -90,6 +93,24 @@ its own dependencies from within the notebook (`DicomRTTool`, `tcia_utils`, `Sim
 **Prerequisites:** basic familiarity with DICOM and radiation therapy workflows. Python
 experience is helpful but not required — worked examples are provided throughout, and
 Session 0 covers the setup from zero.
+
+---
+
+## Session 3 methods
+
+- Vaassen F, et al. *Evaluation of measures for assessing time-saving of automatic organ-at-risk
+  segmentation in radiotherapy.* Phys Imaging Radiat Oncol. 2020;13:1-6.
+  [doi:10.1016/j.phro.2019.12.001](https://doi.org/10.1016/j.phro.2019.12.001) — added path length
+  & surface DSC vs. editing time.
+- Nikolov S, et al. *Clinically Applicable Segmentation of Head and Neck Anatomy for Radiotherapy.*
+  J Med Internet Res. 2021;23(7):e26151. [doi:10.2196/26151](https://doi.org/10.2196/26151) —
+  surface Dice at tolerance τ.
+- Baroudi H, et al. *Automated Contouring and Planning in Radiation Therapy: What Is 'Clinically
+  Acceptable'?* Diagnostics. 2023;13(4):667.
+  [doi:10.3390/diagnostics13040667](https://doi.org/10.3390/diagnostics13040667) — the 1–5
+  clinical-acceptability scale.
+- Elguindi S, et al. *Reference-free QC of organ-at-risk contours via radiomic and positional
+  signatures* — companion method for `qc_workflow`.
 
 ---
 
