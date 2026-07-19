@@ -1,72 +1,41 @@
 # From Pixels to Patients
 ### Practical Pipelines for Implementing AI in Radiation Oncology
-**AAPM 2026 Â· A three-part educational track**
+**AAPM 2026 · a three-part educational track**
 
-Artificial intelligence is transforming radiation oncology, but clinical adoption is
-slowed by a persistent gap between theory and practice. This track closes that gap with
-a start-to-finish playbook: from raw treatment data, to a trained model, to safe clinical
-deployment. Each session pairs didactic content with a demonstration of open-source tools,
-and everything here â€” reference code, notebooks, and templates â€” is meant to be run.
+A start-to-finish playbook: raw treatment data -> trained model -> safe clinical deployment.
+Every session pairs a short talk with runnable open-source code, notebooks, and templates.
 
 Presented by **Brian M. Anderson, PhD**, Radiation Medicine & Applied Sciences.
 
----
-
-## Repository layout
+## Layout
 
 ```
-AAPM2026_PixelsToPatients/
-â”œâ”€â”€ Session1/   From DICOM to a Generalized Research Dataset
-â”œâ”€â”€ Session2/   From Dataset to Model: PyTorch Workflows
-â”œâ”€â”€ Session3/   From Model to Clinic: Deployment and Integration
-â””â”€â”€ README.md   (you are here)
+Session1/   DICOM -> generalized research dataset
+Session2/   dataset -> model (PyTorch)
+Session3/   model -> clinic (deployment QC)
 ```
 
-Each `SessionN/` folder is self-contained and holds that session's materials â€” a
-`Guide.md` orienting you to the contents, plus the runnable notebooks, code, and templates
-demonstrated in the talk.
+Each `SessionN/` is self-contained: start from its `Guide.md`, then run the notebook/code.
 
----
+## Sessions
 
-## The three sessions
+**1 · DICOM to a research dataset** — [`Session1/Guide.md`](Session1/Guide.md)
+Convert RT DICOM (CT/MR/RTSTRUCT/RTPLAN/RTDOSE) into AI-ready NIfTI/NumPy with metadata and an
+anonymization key, using [DicomRTTool](https://github.com/brianmanderson/Dicom_RT_and_Images_to_Mask).
+Downloads the public **NSCLC-Radiomics** cohort from TCIA.
 
-### Session 1 â€” From DICOM to a Generalized Research Dataset  Â·  `Session1/`
-Radiation oncology data is locked inside complex DICOM objects (CT, MR, RTSTRUCT, RTPLAN,
-RTDOSE). This session shows a reproducible workflow to convert them into generalized,
-AI-ready formats (NIfTI, NumPy, metadata sidecars) while preserving the clinical metadata
-that makes the data useful â€” and an anonymization key that lets the dataset keep growing.
+**2 · Dataset to a model** — `Session2/`
+3D/4D dataloaders, RT-specific augmentation, and reproducible PyTorch pipelines with
+leakage-safe, patient-level splits.
 
-**Inside:** an end-to-end notebook that downloads the public **NSCLC-Radiomics** cohort
-from TCIA and runs the full pipeline with [DicomRTTool](https://github.com/brianmanderson/Dicom_RT_and_Images_to_Mask).
-See [`Session1/Guide.md`](Session1/Guide.md) to get started.
-
-### Session 2 â€” From Dataset to Model: PyTorch Workflows  Â·  `Session2/`
-Once the data is curated, it must be shaped for deep learning. This session walks through
-dataloaders for 3D/4D medical data, augmentation strategies unique to RT, and reproducible
-PyTorch pipelines â€” with an emphasis on version control, dataset-leakage prevention, and
-scaling to large cohorts.
-
-*Materials to be added.*
-
-### Session 3 â€” From Model to Clinic: Deployment and Integration  Â·  `Session3/`
-Developing a model is only half the challenge; the harder part is safe deployment. This
-session covers the QC infrastructure needed to manage it â€” input validation, output sanity
-checking, and detecting model drift, out-of-distribution cases, and silent failures â€” drawn
-from real-world experience (including our own mistakes), plus a framework for monitoring
-and governance across the full model lifecycle.
-
-**Inside:** a **reference-free** contour-QC layer that characterizes the Session 1/2 training
-data and checks new contours with no ground truth — input validation (is it CT? in-range
-spacing?), a radiomic **shape** outlier detector, and a **positional** atlas that flags a GTV
-placed where the surrounding anatomy says it shouldn't be. Ships an end-to-end script
-(`run_qc_checks.py`), a reusable `qc_workflow/` package, and a companion notebook. See
-[`Session3/Guide.md`](Session3/Guide.md).
-
----
+**3 · Model to the clinic** — [`Session3/Guide.md`](Session3/Guide.md)
+Two contour-QC tools:
+- **`qc_workflow`** — *reference-free* QC (no ground truth): input validation + radiomic **shape**
+  outlier + **positional** atlas (catches a mislocated GTV or swapped Lung_L/R).
+- **`contour_compare`** — *reference-based* comparison (AI vs. manual): volumetric Dice, surface
+  Dice @1/2/3 mm, added/total path length, estimated time saved, and a 1-5 acceptability rating.
 
 ## Getting started
-
-The materials are Python-based. A typical setup:
 
 ```bash
 git clone https://github.com/brianmanderson/AAPM2026_PixelsToPatients.git
@@ -74,25 +43,36 @@ cd AAPM2026_PixelsToPatients
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 ```
 
-Then open the session you're interested in and follow its `Guide.md`. Session 1 installs
-its own dependencies from within the notebook (`DicomRTTool`, `tcia_utils`, `SimpleITK`, â€¦).
+Then open a session and follow its `Guide.md`. Session 1 installs its own deps from the notebook;
+Session 3 needs `numpy scipy nibabel pandas matplotlib`.
 
-**Prerequisites:** basic familiarity with DICOM and radiation therapy workflows. Python
-experience is helpful but not required â€” worked examples are provided throughout.
+## Data & privacy
 
----
+**Code and documentation only — no patient data.** `.gitignore` excludes downloaded imaging,
+generated datasets, and any `anonymization_key.json` (which maps study IDs to MRNs). Never commit
+imaging data or re-identification keys.
 
-## Tools & data
+## References
 
-- **DicomRTTool** â€” DICOM â‡„ NIfTI/NumPy conversion for RT data Â· <https://github.com/brianmanderson/Dicom_RT_and_Images_to_Mask> Â· `pip install DicomRTTool`
-- **NSCLC-Radiomics** â€” public sample cohort from TCIA Â· [collection page](https://www.cancerimagingarchive.net/collection/nsclc-radiomics/) Â· DOI [10.7937/K9/TCIA.2015.PF0M9REI](https://doi.org/10.7937/K9/TCIA.2015.PF0M9REI) Â· license **CC BY-NC 3.0** (cite the collection and Aerts et al. 2014 if you use it)
+**Session 3 methods**
+- Vaassen F, et al. *Evaluation of measures for assessing time-saving of automatic organ-at-risk
+  segmentation in radiotherapy.* Phys Imaging Radiat Oncol. 2020;13:1-6.
+  [doi:10.1016/j.phro.2019.12.001](https://doi.org/10.1016/j.phro.2019.12.001) — added path length
+  & surface DSC vs. editing time.
+- Nikolov S, et al. *Clinically Applicable Segmentation of Head and Neck Anatomy for Radiotherapy.*
+  J Med Internet Res. 2021;23(7):e26151. [doi:10.2196/26151](https://doi.org/10.2196/26151) —
+  surface Dice at tolerance τ.
+- Baroudi H, et al. *Automated Contouring and Planning in Radiation Therapy: What Is 'Clinically
+  Acceptable'?* Diagnostics. 2023;13(4):667.
+  [doi:10.3390/diagnostics13040667](https://doi.org/10.3390/diagnostics13040667) — the 1-5
+  clinical-acceptability scale.
+- Elguindi S, et al. *Reference-free QC of organ-at-risk contours via radiomic and positional
+  signatures* — companion method for `qc_workflow`.
 
----
-
-## Notes on data & privacy
-
-This repository holds **code and documentation only** â€” no patient data. The `.gitignore`
-excludes downloaded DICOM/NIfTI, generated datasets, and, most importantly, any
-`anonymization_key.json` (which maps study IDs back to MRNs and must never leave a secured,
-access-controlled location). Keep it that way: never commit imaging data or re-identification keys.
-
+**Data & tools**
+- Aerts HJWL, et al. *Decoding tumour phenotype by noninvasive imaging using a quantitative
+  radiomics approach.* Nat Commun. 2014;5:4006.
+  [doi:10.1038/ncomms5006](https://doi.org/10.1038/ncomms5006).
+- NSCLC-Radiomics — [TCIA collection](https://www.cancerimagingarchive.net/collection/nsclc-radiomics/) ·
+  [doi:10.7937/K9/TCIA.2015.PF0M9REI](https://doi.org/10.7937/K9/TCIA.2015.PF0M9REI) · CC BY-NC 3.0.
+- DicomRTTool — <https://github.com/brianmanderson/Dicom_RT_and_Images_to_Mask> · `pip install DicomRTTool`.
